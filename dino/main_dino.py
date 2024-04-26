@@ -112,7 +112,7 @@ def get_args_parser():
         help="""Scale range of the cropped image before resizing, relatively to the origin image.
         Used for large global view cropping. When disabling multi-crop (--local_crops_number 0), we
         recommand using a wider range of scale ("--global_crops_scale 0.14 1." for example)""")
-    parser.add_argument('--local_crops_number', type=int, default=8, help="""Number of small
+    parser.add_argument('--local_crops_number', type=int, default=10, help="""Number of small
         local views to generate. Set this parameter to 0 to disable multi-crop training.
         When disabling multi-crop we recommend to use "--global_crops_scale 0.14 1." """)
     parser.add_argument('--local_crops_scale', type=float, nargs='+', default=(0.05, 0.4),
@@ -164,13 +164,10 @@ def train_dino(args):
         args.local_crops_number,
     )
 
-    #paths = pd.read_csv("/home/abe/KidneyM/hubmap2021/yolov5/SAHI/runs/predict/pas_wbf_8_croped.csv")
-    #paths = paths[paths["conf"]>0.2]["path"].to_numpy()
     paths = glob.glob("/PAS_images/*")
     print(len(paths))
 
     dataset = TrainDataset(paths, transform=transform)
-    #dataset = datasets.ImageFolder(args.data_path, transform=transform)
     sampler = torch.utils.data.DistributedSampler(dataset, shuffle=True)
     data_loader = torch.utils.data.DataLoader(
         dataset,
