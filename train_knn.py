@@ -4,6 +4,7 @@ from cuml.neighbors import KNeighborsClassifier
 from sklearn.metrics import roc_auc_score
 import numpy as np
 import cupy as cp
+import sys
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, auc
 import numpy as np
@@ -43,11 +44,11 @@ def multiclass_prauc(y_true, y_pred, n_classes):
 
 
 df = cudf.read_csv("oof.csv")
-sub = pd.read_csv("sub.csv")
+sub = cudf.read_csv("sub.csv")
+#model_type = "vit_base" #['imnet', 'vit_base']
+model_type = sys.argv[1]
 test_label = sub["label"].to_numpy()
-model_type = "dino"
-
-test_data = cp.load(f"{model_type}/dino_test.npy")
+test_data = cp.load(f"{model_type}/{model_type}_test.npy")
 test_predictions_ = []
 
 for k in [5,10,20,50]:
@@ -61,14 +62,11 @@ for k in [5,10,20,50]:
         val_labels = val["label"].values
         knn = KNeighborsClassifier(n_neighbors=k)
         knn.fit(train_data, train_labels)
-
-
         val_predictions = knn.predict_proba(val_data)
         test_predictions = knn.predict_proba(test_data)
         test_predictions_.append(test_predictions)
     
         val_auc = roc_auc_score(cp.asnumpy(val_labels),cp.asnumpy(val_predictions),multi_class="ovr")
-        #print(val_auc)
     
     test_predictions_ = cp.stack(test_predictions_,axis=-1)
     test_predictions_ = cp.mean(test_predictions_,axis=-1)
