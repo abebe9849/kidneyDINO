@@ -30,10 +30,8 @@ def multiclass_prauc(y_true, y_pred, n_classes):
         # Extract true labels and predicted probabilities for class i
         true_class = y_true_encoded[:, i]
         pred_probs = y_pred[:, i]
-        
-        # Calculate precision-recall curve
+
         precision, recall, _ = precision_recall_curve(true_class, pred_probs)
-        
         # Calculate AUC for the precision-recall curve
         pr_auc = auc(recall, precision)
         
@@ -42,29 +40,14 @@ def multiclass_prauc(y_true, y_pred, n_classes):
 
     return prauc_scores/4
 
-# Example usage:
-# y_true = [0, 1, 2, 0, 1, 2]  # True labels
-# y_pred = np.array([[0.9, 0.05, 0.05], [0.05, 0.9, 0.05], [0.05, 0.05, 0.9],
-#                    [0.85, 0.1, 0.05], [0.05, 0.8, 0.15], [0.1, 0.2, 0.7]])  # Predicted probabilities
-# n_classes = 3  # Number of classes
-
-# prauc_scores = multiclass_prauc(y_true, y_pred, n_classes)
-# print(prauc_scores)
 
 
-# データの準備
-# train_data, train_labels, val_data, val_labels をここで定義します。
-# 例: train_data = cudf.DataFrame(...), train_labels = cudf.Series(...)
-
-# kNNモデルの訓練
-
-df = cudf.read_csv("/home/abe/KidneyM/dino/FIX/WO_kouka/B600__4cls/oof.csv")
-
-
-sub = pd.read_csv("/home/abe/KidneyM/dino/FIX/WO_kouka/B600__4cls/sub.csv")
+df = cudf.read_csv("oof.csv")
+sub = pd.read_csv("sub.csv")
 test_label = sub["label"].to_numpy()
 model_type = "dino"
-test_data = cp.load(f"/home/abe/KidneyM/dino/pas_glomerulus_exp001/KNN/OLD/{model_type}/dino_test.npy")
+
+test_data = cp.load(f"{model_type}/dino_test.npy")
 test_predictions_ = []
 
 for k in [5,10,20,50]:
@@ -72,8 +55,8 @@ for k in [5,10,20,50]:
     for i in range(4):
         tra = df[df["fold"]!=i].reset_index(drop=True)
         val = df[df["fold"]==i].reset_index(drop=True)
-        train_data = cp.load(f"/home/abe/KidneyM/dino/pas_glomerulus_exp001/KNN/OLD/{model_type}/dino_fold{i}_tra.npy")
-        val_data = cp.load(f"/home/abe/KidneyM/dino/pas_glomerulus_exp001/KNN/OLD/{model_type}/dino_fold{i}_val.npy")
+        train_data = cp.load(f"{model_type}_fold{i}_tra.npy")
+        val_data = cp.load(f"{model_type}_fold{i}_val.npy")
         train_labels = tra["label"].values
         val_labels = val["label"].values
         knn = KNeighborsClassifier(n_neighbors=k)
