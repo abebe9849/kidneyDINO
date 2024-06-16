@@ -4,9 +4,11 @@
 
 
 ### in order to use cuml/cupy
-conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 python=3.11 cuda-version=11.2
+conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 python=3.11 cuda-version=11.2 #rapids-24.06
 
-kidneySSL
+
+conda env create -f=kidneySSL.yml #kidneySSL
+
 
 ### pretraining
 conda activate kidneySSL
@@ -26,6 +28,8 @@ python train_knn.py vit_base
 python train_knn.py imnet
 
 ###  train&evaluate linear model
+conda activate kidneySSL
+
 
 ### 
 
