@@ -16,6 +16,7 @@ import os
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2"
 #torchrun --nproc_per_node=3  main_dino.py
+#python -m torch.distributed.launch --nproc_per_node=3 main_dino.py
 import sys
 import datetime
 import time
@@ -122,7 +123,7 @@ def get_args_parser():
     # Misc
     parser.add_argument('--data_path', default='/path/to/imagenet/train/', type=str,
         help='Please specify path to the ImageNet training data.')
-    parser.add_argument('--output_dir', default="/home/abe/KidneyM/dino/pas_glomerulus_EMT_wbf_L", type=str, help='Path to save logs and checkpoints.')
+    parser.add_argument('--output_dir', default="pas_glomerulus", type=str, help='Path to save logs and checkpoints.')
     parser.add_argument('--saveckp_freq', default=20, type=int, help='Save checkpoint every x epochs.')
     parser.add_argument('--seed', default=0, type=int, help='Random seed.')
     parser.add_argument('--num_workers', default=10, type=int, help='Number of data loading workers per GPU.')
@@ -147,7 +148,7 @@ class TrainDataset(torch.utils.data.Dataset):
 
         image = self.transform(image)
 
-        label = torch.tensor(0).float()
+        label = torch.tensor(0).float()#not used
         return image,label
 
 def train_dino(args):
