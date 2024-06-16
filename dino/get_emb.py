@@ -90,12 +90,12 @@ def eval_linear(args):
         dataset_val = embDataset(tra_df["path"].to_numpy(), transform=val_transform)
         val_loader = torch.utils.data.DataLoader(dataset_val,batch_size=128,num_workers=10,pin_memory=True,)
         emb = validate_network(val_loader, model)
-        np.save(f"{args.output_dir}/{args.arch}_tra_fold{fold}.npy",emb)
+        np.save(f"{args.output_dir}/{args.arch}_fold{fold}_tra.npy",emb)
         
         dataset_val = embDataset(val_df["path"].to_numpy(), transform=val_transform)
         val_loader = torch.utils.data.DataLoader(dataset_val,batch_size=128,num_workers=10,pin_memory=True,)
         emb = validate_network(val_loader, model)
-        np.save(f"{args.output_dir}/{args.arch}_val_fold{fold}.npy",emb)
+        np.save(f"{args.output_dir}/{args.arch}_fold{fold}_val.npy",emb)
 
 
 
