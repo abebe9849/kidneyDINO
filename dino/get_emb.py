@@ -30,25 +30,20 @@ import warnings
 from sklearn.metrics import roc_auc_score
 warnings.filterwarnings("ignore")
 import numpy as np
-class TrainDataset(torch.utils.data.Dataset):
-    def __init__(self, paths,train=True,transform=None):
+
+
+class embDataset(torch.utils.data.Dataset):
+    def __init__(self, paths,transform=None):
         self.paths = paths
         self.transform = transform
-
-        self.train = train
-
     def __len__(self):
         return len(self.paths)
 
     def __getitem__(self, idx):
         file_path = self.paths[idx]
         image = Image.open(file_path)
-        
         image = self.transform(image)
-        
-
-        label = torch.tensor(0).long()
-        return image,label
+        return image
 
 def eval_linear(args):
     #utils.init_distributed_mode(args)
@@ -62,20 +57,11 @@ def eval_linear(args):
     val_transform = pth_transforms.Compose([
         pth_transforms.Resize(512, interpolation=3),
         pth_transforms.CenterCrop(448),
-        #pth_transforms.RandomGrayscale(p=1),
-        pth_transforms.RandomEqualize(p=1),
         pth_transforms.ToTensor(),
         pth_transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
     ])
 
-    paths_ = 
-    dataset_val = TrainDataset(paths_, transform=val_transform)
-
-    val_loader = torch.utils.data.DataLoader(
-        dataset_val,batch_size=128,num_workers=10,pin_memory=True,
-    )
-    print(f"Data loaded with {len(dataset_val)} val imgs.")
-
+    
     # ============ building network ... ============
     if args.arch in vits.__dict__.keys():
         model = vits.__dict__[args.arch](patch_size=args.patch_size, num_classes=0)
@@ -87,9 +73,29 @@ def eval_linear(args):
         model = timm.create_model("vit_base_patch16_224", pretrained=True,num_classes=0,in_chans=3,img_size=448)
         model.cuda()
         model.eval()
+
+    df = pd.read_csv("oof.csv")
+    test_df = pd.read_csv("test.csv")
+
+    dataset_val = embDataset(test_df["path"].to_numpy(), transform=val_transform)
+    val_loader = torch.utils.data.DataLoader(dataset_val,batch_size=128,num_workers=10,pin_memory=True,)
     emb = validate_network(val_loader, model)
+    np.save(f"{args.output_dir}/{args.arch}_test.npy",emb)
     
-    np.save(f"{args.output_dir}/{args.arch}__finalG_emb.npy",emb)
+    for fold in range():
+        tra_df = df[df["fold"]!=fold].reset_index(drop=True)
+        val_df = df[df["fold"]==fold].reset_index(drop=True)
+        
+
+        dataset_val = embDataset(tra_df["path"].to_numpy(), transform=val_transform)
+        val_loader = torch.utils.data.DataLoader(dataset_val,batch_size=128,num_workers=10,pin_memory=True,)
+        emb = validate_network(val_loader, model)
+        np.save(f"{args.output_dir}/{args.arch}_tra_fold{fold}.npy",emb)
+        
+        dataset_val = embDataset(val_df["path"].to_numpy(), transform=val_transform)
+        val_loader = torch.utils.data.DataLoader(dataset_val,batch_size=128,num_workers=10,pin_memory=True,)
+        emb = validate_network(val_loader, model)
+        np.save(f"{args.output_dir}/{args.arch}_val_fold{fold}.npy",emb)
 
 
 
@@ -100,14 +106,10 @@ def validate_network(val_loader, model):
     metric_logger = utils.MetricLogger(delimiter="  ")
     header = 'Test:'
     preds = []
-
-    for inp, target in metric_logger.log_every(val_loader, 50, header):
-        # move to gpu
+    for inp in metric_logger.log_every(val_loader, 50, header):
         inp = inp.cuda(non_blocking=True)
-        target = target.cuda(non_blocking=True)
         output = model(inp).to("cpu").numpy()
         preds.append(output)
-
     preds = np.concatenate(preds)
 
     return preds
