@@ -1,4 +1,4 @@
-name: rsna2022
+name: kidneySSL
 channels:
   - huggingface
   - pytorch
