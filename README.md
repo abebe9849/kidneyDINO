@@ -9,17 +9,18 @@ conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 p
 
 conda env create -f=kidneySSL.yml #kidneySSL
 
-
 ### pretraining
+''' python
 conda activate kidneySSL
 python -m torch.distributed.launch --nproc_per_node=3 main_dino.py ##600epoch dino training
-
+'''
 ### embed image
+'''python
 conda activate kidneySSL
 cd dino
 python get_emb.py --arch vit_base #dino glo pretrained ViT-B
 python get_emb.py --arch imnet #supervised ImageNet pretrained ViT-B
-
+'''
 ###  train&evaluate kNN model 
 
 ##### 4cls 
