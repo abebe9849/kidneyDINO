@@ -4,10 +4,10 @@
 Official implementation of the paper "Self-supervised learning for feature extraction from glomerular images and disease classification with minimal annotations ".
 
 ### installation
-
+```
 conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 python=3.11 cuda-version=11.2 #rapids-24.06
 conda env create -f=kidneySSL.yml #kidneySSL
-
+```
 ### pretraining
 
 ``` python
