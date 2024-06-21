@@ -57,19 +57,10 @@ class TrainDataset(torch.utils.data.Dataset):
 
 
 all_df = pd.read_csv("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/final_pas.csv")
+#remove completely sclerosed glomeruli
 all_df = all_df[all_df["kouka_or_not"]==False].reset_index(drop=True)
 
-print(all_df.shape)
 
-#all_df = all_df[all_df["conf"]>0.2].reset_index(drop=True)
-
-
-
-
-
-all_df["label"]=np.where(all_df["target"].to_numpy()=="IGA",1,0)
-
-print(all_df["target"].unique())
 
 """
 ・MinorG（微笑糸球体病変）＋　Minima (微小変化型ネフローゼ）
@@ -86,78 +77,11 @@ def target2_label(x):
         return 1
     elif x in ["MEN","LUE"]:
         return 2
-    elif x in ["AMY"]:
-        return 7
-    elif x in ["MPG"]:
-        return 8
-    elif x in ["ANC","GBM"]:
-        return 4
-    elif x in ["END"]:
-        return 9
-    elif x in ["TIN","ATN","ATI","IGG"]:
-        return 6
-    elif x in ["BNS"]:
-        return 5
-    elif x in ["FGS","OBE"]:
-        return 9
     elif x in ["DMN"]:
         return 3
-    elif x in ["FAB"]:
-        return 11
-    elif x in ["LUD"]:
-        return 12
-    elif x in ["LCH"]:
-        return 13#5
-    elif x in ["SLC","SCL"]:
-        return 14#4
+    else:
+        return 4
 
-    
-    elif x in ["MNS"]:
-        return 15#4
-    elif x in ["ALP"]:
-        return 16#4
-    elif x in ["TMA"]:
-        return 17#3
-
-
-    elif x in ["PRE"]:
-        return 18
-    elif x in ["CCE"]:
-        return 19 #1
-    elif x in ["OTH"]:
-        return 20 #1
-    elif x in ["CNI"]:
-        return 21 #1
-    
-    elif x in ["LUC"]:
-        return 22 #1
-
-"""
-0      56
-1     148
-2      39
-3      16
-
-4      20
-5      18
-6      23
-7       6
-8       6
-9      14
-11      6
-12      5
-13      5
-14      4
-15      4
-16      4
-17      3
-18      2
-19      1
-20      1
-21      2
-22      2
-"""
-    
 
 all_df["label"] =  np.vectorize(target2_label)(
     all_df["target"].to_numpy())
@@ -194,7 +118,6 @@ for i in range(n_target):
 all_df = pd.concat(all_df_,axis=0).reset_index(drop=True)
 
     
-    
 
 folds = all_df[all_df["fold"]!=N_fold-1].reset_index(drop=True)
 
@@ -218,12 +141,6 @@ def sel(df,SEED=42):
     df = pd.concat(tmps,axis=0).reset_index(drop=True)
     return df
         
-      
-t_25 = sel(tra_df)     
-print(t_25["label"].value_counts())
-print(t_25.groupby("label")["WSI"].nunique())
-
-#exit()
 test_df = all_df[all_df["fold"]==N_fold-1].reset_index(drop=True)
 
 from sklearn.metrics import roc_auc_score
@@ -509,7 +426,7 @@ if __name__ == '__main__':
         We typically set this to False for ViT-Small and to True with ViT-Base.""")
     parser.add_argument('--arch', default='vit_base', type=str, help='Architecture')
     parser.add_argument('--patch_size', default=16, type=int, help='Patch resolution of the model.')
-    parser.add_argument('--pretrained_weights', default='/home/abe/KidneyM/dino/pas_glomerulus_exp001/checkpoint0600.pth', type=str, help="Path to pretrained weights to evaluate.")
+    parser.add_argument('--pretrained_weights', default='checkpoint0600.pth', type=str, help="Path to pretrained weights to evaluate.")
     parser.add_argument("--checkpoint_key", default="teacher", type=str, help='Key to use in the checkpoint (example: "teacher")')
     parser.add_argument('--epochs', default=100, type=int, help='Number of epochs of training.')
     parser.add_argument("--lr", default=0.001, type=float, help="""Learning rate at the beginning of
@@ -523,7 +440,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_path', default='/path/to/imagenet/', type=str)
     parser.add_argument('--num_workers', default=10, type=int, help='Number of data loading workers per GPU.')
     parser.add_argument('--val_freq', default=1, type=int, help="Epoch frequency for validation.")
-    parser.add_argument('--output_dir', default="/home/abe/KidneyM/dino/FIX/WO_kouka", help='Path to save logs and checkpoints')
+    parser.add_argument('--output_dir', default="./dino_4cls", help='Path to save logs and checkpoints')
     parser.add_argument('--num_labels', default=2, type=int, help='Number of labels for linear classifier')
     parser.add_argument('--fold', default=0, type=int, help='Number of labels for linear classifier')
 
@@ -535,7 +452,7 @@ if __name__ == '__main__':
     os.makedirs(ROOT,exist_ok=True)
     args.output_dir = ROOT+str(args.fold)
     os.makedirs(args.output_dir,exist_ok=True)
-    #eval_linear(args)
+    eval_linear(args)
     
     args.fold = 1
     args.output_dir = ROOT+str(args.fold)
@@ -550,9 +467,7 @@ if __name__ == '__main__':
     args.fold = 3
     args.output_dir = ROOT+str(args.fold)
     os.makedirs(args.output_dir,exist_ok=True)
-    #eval_linear(args)
-    
-    
+    eval_linear(args)
     
     cols = [f"pred_{i}" for i in range(4)]
     
