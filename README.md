@@ -24,27 +24,32 @@ python get_emb.py --arch imnet #supervised ImageNet pretrained ViT-B
 ```
 ###  train&evaluate kNN model 
 
-##### 4cls 
-```
-conda activate rapids-24.06 
+ 
+```python
+conda activate rapids-24.06
+##### disease 4cls 
 python train_knn.py vit_base 
 python train_knn.py imnet
-```
+##### clinical parameter 2cls
+
+```python
 ###  train&evaluate linear model
 ```
 conda activate kidneySSL
 
-##### 4cls 
+##### disease 4cls 
 
 python dino/eval_linear_e4cls.py #lableled 100%
 python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
-```
+##### clinical parameter 2cls
 
+```
 ### PCA analyze 
 
+```python
 
-```
-
+python dino/dino-vit-features/pca.py --model_type dino_vitb16
+python dino/dino-vit-features/pca.py --model_type vit_base_patch16_224
 #### for supp fig2 rgb histgram analyze
 python dino/dino-vit-features/RGB_analyze.py
 
