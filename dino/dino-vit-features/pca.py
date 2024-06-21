@@ -31,9 +31,7 @@ def pca(image_paths, load_size: int = 224, layer: int = 11, facet: str = 'key', 
     """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     device = "cpu"
-    w_path = "/home/abe/KidneyM/dino/pas_glomerulus_exp001/checkpoint0600.pth"
-    if model_type=="dino_vitb16":
-        w_path="/home/abe/KidneyM/dino/pas_glomerulus_wbf_L/checkpoint0600.pth"
+    w_path = "checkpoint0600.pth"
     extractor = ViTExtractor(model_type, stride,w_path, device=device)
     descriptors_list = []
     image_pil_list = []
@@ -169,8 +167,7 @@ if __name__ == "__main__":
         #images_paths = [x for x in root_dir.iterdir() if x.suffix.lower() in ['.jpg', '.png', '.jpeg']]
         
         #images_paths = path_l[::len(path_l)//100][:50]
-        images_paths = glob.glob("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/KOuka/hand_kouka/*")+glob.glob("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/KOuka/F/high_conf/*")+glob.glob("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/KOuka/F/kouka_kakutei/*")
-        images_paths = glob.glob("/home/abe/KidneyM/dino/dino-vit-features/forPCA/*")
+        images_paths = glob.glob("forPCA/*")
         save_dir = Path(args.save_dir)
         save_dir.mkdir(exist_ok=True, parents=True)
 
