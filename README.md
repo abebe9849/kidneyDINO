@@ -33,7 +33,8 @@ conda activate kidneySSL
 
 ##### 4cls 
 
-python dino/eval_linear_e4cls.py
+python dino/eval_linear_e4cls.py #lableled 100%
+python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
 
 
 ### 
