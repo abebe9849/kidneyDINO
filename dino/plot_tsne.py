@@ -1,3 +1,8 @@
+"""
+Embedding the glomerular image using a self-supervised trained model, compressing the dimension of the embedding using tsne, umap, etc. and displaying it along with the corresponding glomerular image on two-dimensional coordinates. 
+Not used in the paper.
+
+"""
 import cv2
 import pathlib
 import numpy as np
@@ -19,7 +24,7 @@ def imscatter(x, y, image_list, ax=None, zoom=0.5):
     ax.autoscale()
     return artists
 import glob
-df = pd.read_csv("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/final_pas.csv")
+df = pd.read_csv("all_df.csv")
 df["h_w"]=df["H"]/df["W"]
 df = df[df["h_w"]>0.5]
 df = df[df["h_w"]<2].reset_index(drop=True)
