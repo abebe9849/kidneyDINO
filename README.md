@@ -31,6 +31,10 @@ python train_knn.py imnet
 ###  train&evaluate linear model
 conda activate kidneySSL
 
+##### 4cls 
+
+python dino/eval_linear_e4cls.py
+
 
 ### 
 
