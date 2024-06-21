@@ -55,6 +55,12 @@ python dino/dino-vit-features/RGB_analyze.py
 
 ```
 
+### attention map of last blocks(each head visalize)
+```python
+python dino/visualize_attention.py 
+
+```
+
 
 
 
