@@ -80,85 +80,14 @@ def target2_label(x):
         return 1
     elif x in ["MEN","LUE"]:
         return 2
-    elif x in ["AMY"]:
-        return 7
-    elif x in ["MPG"]:
-        return 8
-    elif x in ["ANC","GBM"]:
-        return 4
-    elif x in ["END"]:
-        return 9
-    elif x in ["TIN","ATN","ATI","IGG"]:
-        return 6
-    elif x in ["BNS"]:
-        return 5
-    elif x in ["FGS","OBE"]:
-        return 9
     elif x in ["DMN"]:
         return 3
-    elif x in ["FAB"]:
-        return 11
-    elif x in ["LUD"]:
-        return 12
-    elif x in ["LCH"]:
-        return 13#5
-    elif x in ["SLC","SCL"]:
-        return 14#4
 
-    
-    elif x in ["MNS"]:
-        return 15#4
-    elif x in ["ALP"]:
-        return 16#4
-    elif x in ["TMA"]:
-        return 17#3
+    else:
+        return 4
 
 
-    elif x in ["PRE"]:
-        return 18
-    elif x in ["CCE"]:
-        return 19 #1
-    elif x in ["OTH"]:
-        return 20 #1
-    elif x in ["CNI"]:
-        return 21 #1
-    
-    elif x in ["LUC"]:
-        return 22 #1
-
-"""
-0      56
-1     148
-2      39
-3      16
-
-4      20
-5      18
-6      23
-7       6
-8       6
-9      14
-11      6
-12      5
-13      5
-14      4
-15      4
-16      4
-17      3
-18      2
-19      1
-20      1
-21      2
-22      2
-"""
-    
-
-all_df["label"] =  np.vectorize(target2_label)(
-    all_df["target"].to_numpy())
-
-
-
-
+all_df["label"] =  np.vectorize(target2_label)(all_df["target"].to_numpy())
 print(all_df["WSI"].nunique())
 print(all_df.groupby("label")["WSI"].nunique())
 
@@ -199,27 +128,6 @@ folds = all_df[all_df["fold"]!=N_fold-1].reset_index(drop=True)
 tra_df = folds[folds["fold"]!=0].reset_index(drop=True)
 print(tra_df["label"].value_counts())
 print(tra_df.groupby("label")["WSI"].nunique())
-
-def sel(df,SEED=42):
-    np.random.seed(SEED)
-    tmps = []
-    for label in df["label"].unique():
-        tmp = df[df["label"]==label]
-        if tmp["WSI"].nunique()==1:
-            tmp = tmp.sample(frac=0.25,random_state=SEED)
-        else:
-            tmp_WSI = list(tmp["WSI"].unique())
-            tmp_WSI = np.random.choice(tmp_WSI, size=len(tmp_WSI)//4, replace=False)
-            tmp = tmp[tmp["WSI"].isin(tmp_WSI)]
-        tmps.append(tmp)
-        
-    df = pd.concat(tmps,axis=0).reset_index(drop=True)
-    return df
-        
-      
-t_25 = sel(tra_df)     
-print(t_25["label"].value_counts())
-print(t_25.groupby("label")["WSI"].nunique())
 
 #exit()
 test_df = all_df[all_df["fold"]==N_fold-1].reset_index(drop=True)
@@ -507,9 +415,9 @@ if __name__ == '__main__':
     parser.add_argument('--avgpool_patchtokens', default=False, type=utils.bool_flag,
         help="""Whether ot not to concatenate the global average pooled features to the [CLS] token.
         We typically set this to False for ViT-Small and to True with ViT-Base.""")
-    parser.add_argument('--arch', default='vit_large', type=str, help='Architecture')
+    parser.add_argument('--arch', default='vit_base', type=str, help='Architecture')
     parser.add_argument('--patch_size', default=16, type=int, help='Patch resolution of the model.')
-    parser.add_argument('--pretrained_weights', default='/home/abe/KidneyM/dino/pas_glomerulus_wbf_L/checkpoint0600.pth', type=str, help="Path to pretrained weights to evaluate.")
+    parser.add_argument('--pretrained_weights', default='checkpoint0600.pth', type=str, help="Path to pretrained weights to evaluate.")
     parser.add_argument("--checkpoint_key", default="teacher", type=str, help='Key to use in the checkpoint (example: "teacher")')
     parser.add_argument('--epochs', default=100, type=int, help='Number of epochs of training.')
     parser.add_argument("--lr", default=0.001, type=float, help="""Learning rate at the beginning of
@@ -523,53 +431,53 @@ if __name__ == '__main__':
     parser.add_argument('--data_path', default='/path/to/imagenet/', type=str)
     parser.add_argument('--num_workers', default=10, type=int, help='Number of data loading workers per GPU.')
     parser.add_argument('--val_freq', default=1, type=int, help="Epoch frequency for validation.")
-    parser.add_argument('--output_dir', default="/home/abe/KidneyM/dino/pas_glomerulus_exp002", help='Path to save logs and checkpoints')
+    parser.add_argument('--output_dir', default="dino_4cls_25per", help='Path to save logs and checkpoints')
     parser.add_argument('--num_labels', default=2, type=int, help='Number of labels for linear classifier')
     parser.add_argument('--fold', default=0, type=int, help='Number of labels for linear classifier')
     parser.add_argument('--seed25', default=42, type=int, help='Number of labels for linear classifier')
 
     parser.add_argument('--evaluate', dest='evaluate', action='store_true', help='evaluate model on validation set')
     args = parser.parse_args()
+
+    for seed in [0,1,2,3,4]:
+        args.seed25 = seed
     
-    ROOT = f"{args.output_dir}_seed{args.seed25}/"
+        ROOT = f"{args.output_dir}/seed{args.seed25}/"
     
-    os.makedirs(ROOT,exist_ok=True)
-    args.output_dir = ROOT+str(args.fold)
-    os.makedirs(args.output_dir,exist_ok=True)
-    eval_linear(args)
+        os.makedirs(ROOT,exist_ok=True)
+        args.output_dir = ROOT+str(args.fold)
+        os.makedirs(args.output_dir,exist_ok=True)
+        eval_linear(args)
+        
+        args.fold = 1
+        args.output_dir = ROOT+str(args.fold)
+        os.makedirs(args.output_dir,exist_ok=True)
+        eval_linear(args)
+        
+        args.fold = 2
+        args.output_dir = ROOT+str(args.fold)
+        os.makedirs(args.output_dir,exist_ok=True)
+        eval_linear(args)
+        
+        args.fold = 3
+        args.output_dir = ROOT+str(args.fold)
+        os.makedirs(args.output_dir,exist_ok=True)
+        eval_linear(args)    
     
-    args.fold = 1
-    args.output_dir = ROOT+str(args.fold)
-    os.makedirs(args.output_dir,exist_ok=True)
-    eval_linear(args)
-    
-    args.fold = 2
-    args.output_dir = ROOT+str(args.fold)
-    os.makedirs(args.output_dir,exist_ok=True)
-    eval_linear(args)
-    
-    args.fold = 3
-    args.output_dir = ROOT+str(args.fold)
-    os.makedirs(args.output_dir,exist_ok=True)
-    eval_linear(args)
-    
-    
-    
-    cols = [f"pred_{i}" for i in range(4)]
-    
-    
-    sub_pred_ = []
-    oof_ = []
-    for fold in [0,1,2,3]:
-    
-        sub = pd.read_csv(os.path.join(ROOT+str(fold),f"sub_fold{fold}_dino.csv"))
-        sub_pred_.append(sub[cols].to_numpy())
-        oof_.append(pd.read_csv(os.path.join(ROOT+str(fold),f"oof_fold{fold}_dino.csv")))
-    sub_pred_ = np.mean(np.stack(sub_pred_),axis=0)
-    oof_ = pd.concat(oof_,axis=0)
-    oof_.to_csv(f"{ROOT}oof.csv",index=False)
-    
-    for i in range(4):
-        col = f"pred_mean_{i}"
-        sub[col]=sub_pred_[:,i]
-    sub.to_csv(f"{ROOT}sub.csv",index=False)
+        cols = [f"pred_{i}" for i in range(4)]
+        
+        sub_pred_ = []
+        oof_ = []
+        for fold in [0,1,2,3]:
+        
+            sub = pd.read_csv(os.path.join(ROOT+str(fold),f"sub_fold{fold}_dino.csv"))
+            sub_pred_.append(sub[cols].to_numpy())
+            oof_.append(pd.read_csv(os.path.join(ROOT+str(fold),f"oof_fold{fold}_dino.csv")))
+        sub_pred_ = np.mean(np.stack(sub_pred_),axis=0)
+        oof_ = pd.concat(oof_,axis=0)
+        oof_.to_csv(f"{ROOT}oof.csv",index=False)
+        
+        for i in range(4):
+            col = f"pred_mean_{i}"
+            sub[col]=sub_pred_[:,i]
+        sub.to_csv(f"{ROOT}sub.csv",index=False)
