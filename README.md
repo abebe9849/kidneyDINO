@@ -40,7 +40,15 @@ python dino/eval_linear_e4cls.py #lableled 100%
 python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
 ```
 
-### 
+### PCA analyze 
+
+
+```
+
+#### for supp fig2 rgb histgram analyze
+python dino/dino-vit-features/RGB_analyze.py
+
+```
 
 
 
