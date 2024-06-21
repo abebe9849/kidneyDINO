@@ -3,6 +3,15 @@
 
 Official implementation of the paper "Self-supervised learning for feature extraction from glomerular images and disease classification with minimal annotations ".
 
+<details>
+  <summary>
+	  <b>Key Points </b>
+  </summary>
+
+1. **Self-supervised learning extracts meaningful glomerular features without teacher labels:** 
+2. **DINO outperforms conventional supervised learning in disease and clinical classification :** 
+3. **DINO enables deep learning on small datasets, reducing annotation efforts :**
+</details>
 ### installation
 ```
 conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 python=3.11 cuda-version=11.2 #rapids-24.06
