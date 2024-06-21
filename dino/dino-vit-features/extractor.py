@@ -66,13 +66,10 @@ class ViTExtractor:
         if 'dino' in model_type:
             
             
-            if "l" in model_type:
-                model = vits.__dict__["vit_large"](patch_size=16, num_classes=0)
-                w_path = "/home/abe/KidneyM/dino/pas_glomerulus_wbf_L/checkpoint0600.pth"
-            else:
-                model = torch.hub.load('facebookresearch/dino:main', model_type)
+
+            model = torch.hub.load('facebookresearch/dino:main', model_type)
                 
-                w_path = "/home/abe/KidneyM/dino/pas_glomerulus_exp001/checkpoint0600.pth"
+            w_path = "checkpoint0600.pth"
             state_dict = torch.load(w_path, map_location="cpu")["teacher"]
             state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
             state_dict = {k.replace("backbone.", ""): v for k, v in state_dict.items()}
