@@ -31,10 +31,11 @@ conda activate rapids-24.06
 python train_knn.py vit_base 
 python train_knn.py imnet
 ##### clinical parameter 2cls
+```
+###  train&evaluate linear model
 
 ```python
-###  train&evaluate linear model
-```
+
 conda activate kidneySSL
 
 ##### disease 4cls 
@@ -42,8 +43,8 @@ conda activate kidneySSL
 python dino/eval_linear_e4cls.py #lableled 100%
 python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
 ##### clinical parameter 2cls
-
 ```
+
 ### PCA analyze 
 
 ```python
