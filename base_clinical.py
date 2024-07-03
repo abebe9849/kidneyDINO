@@ -49,22 +49,10 @@ from sklearn.model_selection import StratifiedKFold,StratifiedGroupKFold
 ###
 
 all_df = pd.read_csv("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/final_pas.csv")
-#all_df = pd.read_csv("/home/abe/KidneyM/hubmap2021/MATUI_bbxo/final_3.csv")
 
 all_df = all_df[all_df["DM"]!=-1].reset_index(drop=True)
 print(all_df.shape)
 
-
-
-"""
-併存疾患としてDMがあるかどうか
-
-"""
-
-
-
-
-    
 
 all_df["label"] =  all_df["DM"] 
 print(all_df["label"].value_counts())
