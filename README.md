@@ -61,11 +61,13 @@ conda activate kidneySSL
 
 ##### disease 4cls 
 
+#### choose 4cls_dino.yaml or 4cls_imnet.yaml 
 python dino/eval_linear_e4cls.py #lableled 100%
 python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
 ##### clinical parameter 2cls
+#### choose 4cls_dino.yaml or 4cls_imnet.yaml 
 python base_clinical.py #lableled 100%
-base_cli_25.py #lableled 25%
+base_cli_25.py #lableled 25% 
 
 ```
 
