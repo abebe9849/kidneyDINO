@@ -28,6 +28,13 @@ conda activate kidneySSL
 python -m torch.distributed.launch --nproc_per_node=3 main_dino.py ##600epoch dino training
 ```
 
+### download dino-vit-B pretrained weights
+
+https://www.kaggle.com/datasets/abebe9849/sslglomerular-images-weights 
+or
+https://www.kaggle.com/datasets/niioka/dino-ssl/data/checkpoint.pth
+
+
 ### embed image
 ```python
 conda activate kidneySSL
@@ -76,7 +83,6 @@ python dino/dino-vit-features/RGB_analyze.py
 ### attention map of last blocks(each head visalize)
 ```python
 python dino/visualize_attention.py 
-
 ```
 
 ### Issues
