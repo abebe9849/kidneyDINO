@@ -41,7 +41,8 @@ conda activate rapids-24.06
 python train_knn.py vit_base 
 python train_knn.py imnet
 ##### clinical parameter 2cls
-
+python train_knn_2cls.py dino/{task_name} 
+python train_knn_2cls.py imnet/{task_name} 
 
 ```
 ###  train&evaluate linear model
