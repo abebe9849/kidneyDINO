@@ -5,15 +5,13 @@ Official implementation of the paper "Self-supervised learning for feature extra
 
 ######## be going to attach figure 1 here after it is adopted.
 
-<details>
-  <summary>
-	  <b>Key Points </b>
-  </summary>
 
-1. **Self-supervised learning extracts meaningful glomerular features without teacher labels:** 
-2. **DINO outperforms conventional supervised learning in disease and clinical classification :** 
-3. **DINO enables deep learning on small datasets, reducing annotation efforts :**
-</details>
+### Key points
+
+1. **Self-supervised learning extracts meaningful glomerular features without teacher labels ** 
+2. **DINO outperforms conventional supervised learning in disease and clinical classification ** 
+3. **DINO enables deep learning on small datasets, reducing annotation efforts **
+
 
 ### installation
 ```
