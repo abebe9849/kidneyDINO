@@ -3,6 +3,8 @@
 
 Official implementation of the paper "Self-supervised learning for feature extraction from glomerular images and disease classification with minimal annotations ".
 
+######## be going to attach figure 1 here after it is adopted.
+
 <details>
   <summary>
 	  <b>Key Points </b>
