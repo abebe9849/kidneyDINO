@@ -1,0 +1,78 @@
+general:
+  debug: false
+  exp_num: exp_
+  device: 2
+  seed: 42
+  num_folds: 5
+SEED: 42
+preprocess:
+  size: 448
+aug:
+  HorizontalFlip:
+    p: 0.5
+  VerticalFlip:
+    p: 0.5
+  RandomRotate90:
+    p: 0
+  ShiftScaleRotate:
+    p: 0
+    shift_limit: 0.1
+    scale_limit: 0.1
+    rotate_limit: 15
+  RandomBrightnessContrast:
+    p: 0
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+  CLAHE:
+    p: 0
+  one_of_Distortion:
+    p: 0
+  one_of_Blur_Gnoise:
+    p: 0
+  GridMask:
+    p: 0
+    num_grid: 2
+  compress:
+    p: 0
+  CoarseDropout:
+    p: 0
+    max_holes: 4
+    max_height: 6
+    max_width: 6
+augmentation:
+  do_mixup: true
+  do_fmix: false
+  do_cutmix: false
+  do_resizemix: false
+  mix_p: 0.5
+  mix_alpha: 1
+tta:
+  do: false
+deepinsight:
+  do: true
+swap_prob: 0
+model:
+  name: vit_base_patch16_224
+  n_classes: 1
+  features_num: 1280
+  drop_rate: 0
+  drop_path_rate: 0
+  stride: 2
+  Ncat: 4
+  linear: false
+task: DM
+psuedo_label: 0
+train:
+  amp: true
+  amp_inf: false
+  optim: adamw
+  lr: 0.0001
+  epochs: 10
+  without_hesitate: 10
+  batch_size: 32
+  ga_accum: 1
+  scheduler:
+    name: cosine_warmup
+    min_lr: 1.0e-07
+    t_0: 3
+    warmup: 1
