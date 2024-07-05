@@ -12,60 +12,6 @@ from sklearn.model_selection import StratifiedKFold,StratifiedGroupKFold
 model_type = "dino/upc"
 model_type =sys.argv[1]
 task = model_type.split("/")[-1]
-#if task =="alb":
-
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__Alb_over3.0/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__Alb_over3.0/sub.csv")
-#elif task =="dbp":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__dBP_over90/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__dBP_over90/sub.csv")
-#elif task =="DM":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/src/outputs/2024-04-12/DM_FT/oof_exp__DM_imnet_FT.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/src/outputs/2024-04-12/DM_FT/sub_exp__DM_imnet_FT.csv")
-#elif task =="sbp":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__sBP_seed2021_over140/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__sBP_seed2021_over140/sub.csv")
-#elif task =="hep":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__血尿_over1/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__血尿_over1/sub.csv")
-#elif task =="egfr":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__eGFR_over60/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__eGFR_over60/sub.csv")
-#elif task =="upc":
-#    folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__UPC_seed2023_over3.5/oof.csv")
-#    test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__UPC_seed2023_over3.5/sub.csv")
-
-
-if 1:
-    if task =="alb":
-
-        #folds = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__Alb_over3.0/oof.csv")                                                        
-        #test_df = pd.read_csv("/home/abe/KidneyM/dino/FIX/B600__Alb_over3.0/sub.csv")                                                      
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/alb_dino/oof*")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/alb_dino/sub*")[0])
-    elif task =="dbp":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/dbp_dino/oof*")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/dbp_dino/sub*")[0])
-    elif task =="DM":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/DM_dino/oof*")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/DM_dino/sub*")[0])
-    elif task =="sbp":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-14/sbp_dino/oof*csv")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-14/sbp_dino/sub*csv")[0])
-    elif task =="hep":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-14/hep_dino/oof*csv")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-14/hep_dino/sub*csv")[0])
-    elif task =="egfr":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/egfr_dino/oof*")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/egfr_dino/sub*")[0])
-    elif task =="upc":
-        folds = pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/upc_dino/oof*")[0])
-        test_df =  pd.read_csv(glob.glob("/home/abe/KidneyM/dino/src/outputs/2024-04-13/upc_dino/sub*")[0])
-
-
-
-
-
 
 
 
@@ -76,23 +22,6 @@ if COL=="sbp":
     COL="収縮期血圧"
 elif COL=="hep":
     COL="血尿"
-#CONF = dic_[COL]
-#all_df = all_df[all_df[COL]!=-1].reset_index(drop=True)
-
-#all_df["label"] =  np.where(all_df[COL] >=CONF,1,0)
-
-#N_fold = 5
-
-#n_target = all_df["label"].nunique()
-#sgkf = StratifiedGroupKFold(n_splits=N_fold,random_state=2025,shuffle=True)
-#for fold, ( _, val_) in enumerate(sgkf.split(X=all_df, y=all_df.label.to_numpy(),groups=all_df.WSI)):
-#    all_df.loc[val_ , "fold"] = fold
-
-#    val_df = all_df[all_df["fold"]==fold]
-            #print(val_df["label"].nunique())                                                             
-#folds = all_df[all_df["fold"]!=N_fold-1].reset_index(drop=True)
-#test_df = all_df[all_df["fold"]==N_fold-1].reset_index(drop=True)
-
 test_label = test_df["label"].to_numpy()
 
 
