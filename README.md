@@ -18,6 +18,7 @@ Official implementation of the paper "Self-supervised learning for feature extra
 conda create -n rapids-24.06 -c rapidsai -c conda-forge -c nvidia rapids=24.06 python=3.11 cuda-version=11.2 #rapids-24.06
 conda env create -f=kidneySSL.yml #kidneySSL
 ```
+
 ### pretraining
 
 ``` python
@@ -75,6 +76,17 @@ python dino/dino-vit-features/RGB_analyze.py
 python dino/visualize_attention.py 
 
 ```
+
+### Issues
+Please open new issue threads specifying the issue with the codebase or report issues directly to masamasa20001002@gmail.com . 
+
+### Citation
+
+
+### License
+
+The source code for the site is licensed under the MIT license
+
 
 
 
