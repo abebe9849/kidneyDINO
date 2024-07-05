@@ -64,7 +64,9 @@ conda activate kidneySSL
 python dino/eval_linear_e4cls.py #lableled 100%
 python dino/eval_linear_e4cls_25per.py #lableled 25%,5seed for select 25%
 ##### clinical parameter 2cls
-python base_clinical.py 
+python base_clinical.py #lableled 100%
+base_cli_25.py #lableled 25%
+
 ```
 
 ### PCA analyze 
