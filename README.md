@@ -24,6 +24,8 @@ conda env create -f=kidneySSL.yml #kidneySSL
 ``` python
 conda activate kidneySSL
 python -m torch.distributed.launch --nproc_per_node=3 main_dino.py ##600epoch dino training
+
+#### you can use https://www.kaggle.com/datasets/abebe9849/kpmpcrop/data to try dino pretraining 
 ```
 
 ### download dino-vit-B pretrained weights
