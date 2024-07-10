@@ -89,6 +89,12 @@ python dino/dino-vit-features/RGB_analyze.py
 python dino/visualize_attention.py 
 ```
 
+### down load KPMP data & crop glomerular images by public annotation
+```python
+python crop_KPMP.py 
+```
+there are duplicated images because of multiple slices per biopsy.
+
 ### Issues
 Please open new issue threads specifying the issue with the codebase or report issues directly to masamasa20001002@gmail.com . 
 
