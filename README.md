@@ -1,5 +1,5 @@
 # kidneyDINO
-[[paper]()]
+[[paper](https://journals.lww.com/jasn/abstract/9900/self_supervised_learning_for_feature_extraction.439.aspx)]
 
 Official implementation of the paper "Self-supervised learning for feature extraction from glomerular images and disease classification with minimal annotations ".
 
@@ -99,7 +99,7 @@ there are duplicated images because of multiple slices per biopsy.
 Please open new issue threads specifying the issue with the codebase or report issues directly to masamasa20001002@gmail.com . 
 
 ### Citation
-
+Abe, Masatoshi1; Niioka, Hirohiko2; Matsumoto, Ayumi1; Katsuma, Yusuke1; Imai, Atsuhiro1; Okushima, Hiroki1; Ozaki, Shingo3; Fujii, Naohiko3; Oka, Kazumasa4; Sakaguchi, Yusuke1; Inoue, Kazunori1; Isaka, Yoshitaka1; Matsui, Isao1,5,*. Self-Supervised Learning for Feature Extraction from Glomerular Images and Disease Classification with Minimal Annotations. Journal of the American Society of Nephrology ():10.1681/ASN.0000000514, October 09, 2024. | DOI: 10.1681/ASN.0000000514 
 
 ### License
 
