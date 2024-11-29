@@ -5,6 +5,8 @@ Official implementation of the paper "Self-supervised learning for feature extra
 
 https://www.med.osaka-u.ac.jp/activities/results/2024year/isaka2024-11-06 
 
+https://www.med.osaka-u.ac.jp/wp-content/uploads/2024/11/abe_fig2.jpg 
+
 ### Key points
 
 1. Self-supervised learning extracts meaningful glomerular features without teacher labels
