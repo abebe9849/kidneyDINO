@@ -3,8 +3,7 @@
 
 Official implementation of the paper "Self-supervised learning for feature extraction from glomerular images and disease classification with minimal annotations ".
 
-######## be going to attach figure 1 here after it is adopted.
-
+https://www.med.osaka-u.ac.jp/activities/results/2024year/isaka2024-11-06 
 
 ### Key points
 
