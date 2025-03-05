@@ -1,6 +1,6 @@
 
 """
-2値分類
+2値分類 table6
 
 """
 import hydra
