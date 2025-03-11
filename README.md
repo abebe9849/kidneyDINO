@@ -74,6 +74,9 @@ base_cli_25.py #lableled 25%
 
 ```
 
+https://www.kaggle.com/datasets/abebe9849/albFTimnet
+
+
 ### PCA analyze 
 
 ```python
